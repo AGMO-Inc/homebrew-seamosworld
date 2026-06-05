@@ -3,10 +3,9 @@
 # Install (no extra setup — qemu/zstd/xorriso come as dependencies):
 #   brew install agmo-inc/seamosworld/seamosworld
 #
-# Why a Cask (not a Formula): only a Cask can run cleanup on uninstall.
-# `brew uninstall seamosworld` removes the CLI AND the downloaded VM image,
-# Electron app, and data under ~/Library/Application Support/SimulationWorld
-# (see uninstall_postflight) — no separate purge command needed.
+# Data cleanup: `brew uninstall --zap seamosworld` removes the downloaded VM
+# image, Electron app, and data. A plain uninstall keeps them so that
+# `brew upgrade` (= uninstall + install) never wipes the 4.3GB image.
 #
 # The launcher source is tiny; the VM image (qcow2) and Electron app are
 # downloaded from public S3 on install (postflight -> `seamosworld fetch`)
@@ -38,16 +37,7 @@ cask "seamosworld" do
                    print_stderr: true
   end
 
-  # `brew uninstall` removes the symlink automatically; here we also wipe the
-  # downloaded VM image, Electron app, SSH key, and all runtime data.
-  uninstall_postflight do
-    require "fileutils"
-    data = File.expand_path("~/Library/Application Support/SimulationWorld")
-    FileUtils.rm_r(data) if File.exist?(data)
-  end
-
-  # `brew uninstall --zap` (or `brew uninstall` via uninstall_postflight above)
-  # leaves nothing behind.
+  # `brew uninstall --zap` leaves nothing behind (VM image, app, data).
   zap trash: "~/Library/Application Support/SimulationWorld"
 
   caveats <<~EOS
@@ -61,6 +51,6 @@ cask "seamosworld" do
 
     Dashboard: http://localhost:3000
 
-    `brew uninstall seamosworld` also removes the downloaded VM image and app data.
+    `brew uninstall --zap seamosworld` also removes the downloaded VM image and app data.
   EOS
 end

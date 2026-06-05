@@ -11,8 +11,8 @@
 # downloaded from public S3 on install (postflight -> `seamosworld fetch`)
 # and refreshed only when their version changes (`--if-needed`).
 cask "seamosworld" do
-  version "1.0.6"
-  sha256 "43606ef75c15b6f6253a8a4ad1872a5e06254387d041fd76300f4887ffde9cd6"
+  version "1.0.7"
+  sha256 "5a815db0a91ffe4938a419a27f806426ef78a4bc32e7b53b51432aaac1bb9762"
 
   url "https://seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/src/seamosworld-launcher-#{version}.tar.gz",
       verified: "seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/"
@@ -23,6 +23,7 @@ cask "seamosworld" do
   depends_on formula: "qemu"
   depends_on formula: "zstd"
   depends_on formula: "xorriso" # cloud-init NoCloud seed.iso (SSH key injection)
+  depends_on formula: "python@3.12" # side-server(signal-controller) venv
 
   # Expose the launcher CLI as `seamosworld` on PATH (symlink into bin).
   binary "seamosworld-#{version}/seamosworld", target: "seamosworld"

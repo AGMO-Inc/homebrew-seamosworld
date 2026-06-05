@@ -1,4 +1,4 @@
-# SeamOS SimulationWorld — Homebrew Cask
+# SeamOSWorld — Homebrew Cask
 #
 # Install (no extra setup — qemu/zstd/xorriso come as dependencies):
 #   brew install agmo-inc/seamosworld/seamosworld
@@ -12,11 +12,12 @@
 # downloaded from public S3 on install (postflight -> `seamosworld fetch`)
 # and refreshed only when their version changes (`--if-needed`).
 cask "seamosworld" do
-  version "1.0.0"
-  sha256 "f665da00506b34025fd65cf87f2850b92e19dee080a3cab62a9cb224fd313378"
+  version "1.0.5"
+  sha256 "a0593c1294d350209ad42e0ae4d531e0cbe5f93b6d86b6b0e6a1f7f2b00914e0"
 
-  url "https://seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/src/seamosworld-launcher-#{version}.tar.gz"
-  name "SeamOS SimulationWorld"
+  url "https://seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/src/seamosworld-launcher-#{version}.tar.gz",
+      verified: "seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/"
+  name "SeamOSWorld"
   desc "QEMU VM + Electron dashboard for NEVONEX FCAL"
   homepage "https://github.com/AGMO-Inc/seamos-simulator"
 
@@ -25,13 +26,13 @@ cask "seamosworld" do
   depends_on formula: "xorriso" # cloud-init NoCloud seed.iso (SSH key injection)
 
   # Expose the launcher CLI as `seamosworld` on PATH (symlink into bin).
-  binary "seamosworld-#{version}/simworld", target: "seamosworld"
+  binary "seamosworld-#{version}/seamosworld", target: "seamosworld"
 
   # On install/upgrade, download the VM image + Electron app (only what's
   # missing or out of date). Asset failures are non-fatal — `seamosworld start`
   # retries them as a safety net.
   postflight do
-    system_command "#{staged_path}/seamosworld-#{version}/simworld",
+    system_command "#{staged_path}/seamosworld-#{version}/seamosworld",
                    args:         ["fetch", "--if-needed"],
                    print_stdout: true,
                    print_stderr: true

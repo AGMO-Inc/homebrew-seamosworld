@@ -12,7 +12,7 @@
 # and refreshed only when their version changes (`--if-needed`).
 cask "seamosworld" do
   version "1.0.20"
-  sha256 "08a90af60c737ba522e9c798fcea6dade005f3e94edb5ba3d3358147d46bc651"
+  sha256 "c5512908024f7ee071c676ac46c3776cfd273e1eaa69581636b45b511961d9ce"
 
   url "https://seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/src/seamosworld-launcher-#{version}.tar.gz",
       verified: "seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/"

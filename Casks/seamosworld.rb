@@ -11,8 +11,8 @@
 # downloaded from public S3 on install (postflight -> `seamosworld fetch`)
 # and refreshed only when their version changes (`--if-needed`).
 cask "seamosworld" do
-  version "1.0.21"
-  sha256 "49d5fd583587f4db6dbcd68363c769624dd5a6ff1bb0b09e4eca08b8ae88d457"
+  version "1.1.1"
+  sha256 "c17fbee42337a3f20c32142c8de0de0ea820d99c27867002410b11975dedf0bd"
 
   url "https://seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/src/seamosworld-launcher-#{version}.tar.gz",
       verified: "seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/"

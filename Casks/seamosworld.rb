@@ -42,10 +42,20 @@ cask "seamosworld" do
                    sudo:         true,
                    print_stdout: true,
                    print_stderr: true
-    system_command "#{staged_path}/seamosworld-#{version}/seamosworld",
-                   args:         ["fetch", "--if-needed"],
-                   print_stdout: true,
-                   print_stderr: true
+    # Asset download must never fail the install: the VM may be running (qcow2
+    # locked), the disk may be full, or the network may be down. `seamosworld
+    # start` retries this anyway, so warn instead of aborting the whole install
+    # (2026-08-14: a running VM made `brew install` exit 1 after it had already
+    # linked the binary, leaving a confusing half-failed install).
+    begin
+      system_command "#{staged_path}/seamosworld-#{version}/seamosworld",
+                     args:         ["fetch", "--if-needed"],
+                     print_stdout: true,
+                     print_stderr: true
+    rescue StandardError
+      opoo "Asset download incomplete — 'seamosworld start' will retry " \
+           "(stop the VM first if it is running: seamosworld stop)."
+    end
   end
 
   # `brew uninstall --zap` leaves nothing behind (VM image, app, data).

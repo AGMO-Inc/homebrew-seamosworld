@@ -33,6 +33,15 @@ cask "seamosworld" do
   # missing or out of date). Asset failures are non-fatal — `seamosworld start`
   # retries them as a safety net.
   postflight do
+    # vmnet daemon (socket_vmnet) must run as root; `brew install` never starts
+    # services on its own. Without it the VM cannot get an IP and `start` stalls
+    # at "Resolving the VM address". Start it here with sudo so that installing
+    # is genuinely just `brew install` + `seamosworld start` — no extra commands.
+    system_command "/opt/homebrew/bin/brew",
+                   args:         ["services", "start", "socket_vmnet"],
+                   sudo:         true,
+                   print_stdout: true,
+                   print_stderr: true
     system_command "#{staged_path}/seamosworld-#{version}/seamosworld",
                    args:         ["fetch", "--if-needed"],
                    print_stdout: true,

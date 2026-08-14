@@ -11,8 +11,8 @@
 # downloaded from public S3 on install (postflight -> `seamosworld fetch`)
 # and refreshed only when their version changes (`--if-needed`).
 cask "seamosworld" do
-  version "1.5.4"
-  sha256 "6cac47873435c11875f270617fcb74f5095662fd6e9533d68138aa4c14be57af"
+  version "1.6.1"
+  sha256 "b809789975ceccc3234e64ecb459b14727b71f6102dfcefdff50e48ee516a421"
 
   url "https://seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/src/seamosworld-launcher-#{version}.tar.gz",
       verified: "seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/"
@@ -23,6 +23,8 @@ cask "seamosworld" do
   depends_on formula: "qemu"
   depends_on formula: "zstd"
   depends_on formula: "xorriso" # cloud-init NoCloud seed.iso (SSH key injection)
+  depends_on formula: "socket_vmnet" # real-IP (vmnet) networking; without it the launcher falls back to slirp
+  # (socket_vmnet needs `sudo brew services start socket_vmnet` once — install.sh guides it.)
 
   # Expose the launcher CLI as `seamosworld` on PATH (symlink into bin).
   binary "seamosworld-#{version}/seamosworld", target: "seamosworld"

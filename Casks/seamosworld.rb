@@ -37,11 +37,19 @@ cask "seamosworld" do
     # services on its own. Without it the VM cannot get an IP and `start` stalls
     # at "Resolving the VM address". Start it here with sudo so that installing
     # is genuinely just `brew install` + `seamosworld start` — no extra commands.
-    system_command "/opt/homebrew/bin/brew",
-                   args:         ["services", "start", "socket_vmnet"],
-                   sudo:         true,
-                   print_stdout: true,
-                   print_stderr: true
+    #
+    # Skip it when the daemon is already running. `brew upgrade --cask` is
+    # uninstall + install, so this postflight runs on every upgrade — and the
+    # sudo prompt appeared each time even though nothing needed starting. The
+    # launcher pipes brew's output away, so users saw a bare "Password:" with no
+    # explanation and cancelled it (2026-08-17).
+    unless system("/usr/bin/pgrep", "-qf", "socket_vmnet")
+      system_command "/opt/homebrew/bin/brew",
+                     args:         ["services", "start", "socket_vmnet"],
+                     sudo:         true,
+                     print_stdout: true,
+                     print_stderr: true
+    end
     # Asset download must never fail the install: the VM may be running (qcow2
     # locked), the disk may be full, or the network may be down. `seamosworld
     # start` retries this anyway, so warn instead of aborting the whole install

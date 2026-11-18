@@ -18,7 +18,7 @@ cask "seamosworld" do
       verified: "seamosworld-dist-795591862191.s3.ap-northeast-2.amazonaws.com/"
   name "SeamOSWorld"
   desc "QEMU VM + Electron dashboard for NEVONEX FCAL"
-  homepage "https://github.com/AGMO-Inc/seamos-simulator"
+  homepage "https://docs.seamos.io"
 
   depends_on formula: "qemu"
   depends_on formula: "zstd"
